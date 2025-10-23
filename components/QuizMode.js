@@ -157,11 +157,11 @@ const QuizMode = ({ words }) => {
           <div className="text-lg font-semibold text-gray-700 dark:text-gray-300">
             Question {currentQuestion + 1} of {quizQuestions.length}
           </div>
-          <div className="text-lg font-semibold text-primary-600 dark:text-primary-400">
+          <div className="text-lg font-semibold text-primary-500">
             Score: {score}
           </div>
         </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+        <div className="w-full bg-primary-200 rounded-full h-3">
           <motion.div
             className="bg-primary-500 h-3 rounded-full"
             initial={{ width: 0 }}
@@ -214,10 +214,10 @@ const QuizMode = ({ words }) => {
                   whileTap={!showResult ? { scale: 0.98 } : {}}
                   className={`p-4 rounded-xl font-semibold text-lg transition-all border-2 ${
                     showCorrect
-                      ? 'bg-green-100 dark:bg-green-900/30 border-green-500 text-green-700 dark:text-green-300'
+                      ? 'bg-green-100 border-accent-500 text-accent-500'
                       : showWrong
-                      ? 'bg-red-100 dark:bg-red-900/30 border-red-500 text-red-700 dark:text-red-300'
-                      : 'bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20'
+                      ? 'bg-accent-500/10 border-accent-500 text-accent-500'
+                      : 'bg-primary-50 border-primary-300 text-germanblack hover:border-accent-500 hover:bg-primary-100'
                   } ${showResult ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   <div className="flex items-center justify-between">
@@ -237,8 +237,8 @@ const QuizMode = ({ words }) => {
               animate={{ opacity: 1, y: 0 }}
               className={`mt-6 p-4 rounded-lg text-center font-semibold ${
                 selectedAnswer === question.correctAnswer
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                  : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                  ? 'bg-green-100 text-accent-500'
+                  : 'bg-accent-500/10 text-accent-500'
               }`}
             >
               {selectedAnswer === question.correctAnswer

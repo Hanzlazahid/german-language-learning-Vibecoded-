@@ -6,18 +6,20 @@ import Head from 'next/head';
 import ProgressTracker from '@/components/ProgressTracker';
 import { getWords } from '@/lib/firestoreService';
 
-export default function ProgressPage() {
+export default function ProgressPage({ user }) {
   const [words, setWords] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadWords();
-  }, []);
+    if (user) {
+      loadWords(user.uid);
+    }
+  }, [user]);
 
-  const loadWords = async () => {
+  const loadWords = async (uid) => {
     try {
       setLoading(true);
-      const fetchedWords = await getWords();
+      const fetchedWords = await getWords(uid);
       setWords(fetchedWords);
     } catch (err) {
       console.error('Error loading words:', err);
@@ -39,21 +41,23 @@ export default function ProgressPage() {
 
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white mb-3">
+          <h1 className="text-4xl sm:text-5xl font-bold text-primary-500 mb-3">
             📊 Your Progress
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <p className="text-primary-200 text-lg">
             Track your learning journey and achievements
           </p>
         </div>
 
-        {loading ? (
+        {!user || loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
             <p className="text-gray-600 dark:text-gray-400 mt-4">Loading progress...</p>
           </div>
         ) : (
-          <ProgressTracker words={words} />
+          <div className="card p-6 mt-6">
+            <ProgressTracker words={words} />
+          </div>
         )}
       </div>
     </>

@@ -9,28 +9,21 @@ import { addWord, getWords, deleteWord } from '@/lib/firestoreService';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-export default function Home() {
+export default function Home({ user }) {
   const [words, setWords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
-    // Wait for authentication before loading words
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthReady(true);
-        loadWords();
-      }
-    });
+    if (user) {
+      loadWords(user.uid);
+    }
+  }, [user]);
 
-    return () => unsubscribe();
-  }, []);
-
-  const loadWords = async () => {
+  const loadWords = async (uid) => {
     try {
       setLoading(true);
-      const fetchedWords = await getWords();
+      const fetchedWords = await getWords(uid);
       setWords(fetchedWords);
       setError(null);
     } catch (err) {
@@ -48,9 +41,8 @@ export default function Home() {
 
   const handleAddWord = async (wordData) => {
     try {
-      const newWord = await addWord(wordData);
+      const newWord = await addWord(user.uid, wordData);
       setWords([newWord, ...words]);
-      
       // Also save to localStorage as backup
       localStorage.setItem('germanWords', JSON.stringify([newWord, ...words]));
     } catch (err) {
@@ -67,12 +59,10 @@ export default function Home() {
     if (!confirm('Are you sure you want to delete this word?')) {
       return;
     }
-
     try {
-      await deleteWord(wordId);
+      await deleteWord(user.uid, wordId);
       const updatedWords = words.filter((word) => word.id !== wordId);
       setWords(updatedWords);
-      
       // Also update localStorage
       localStorage.setItem('germanWords', JSON.stringify(updatedWords));
     } catch (err) {
@@ -92,10 +82,10 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white mb-3">
+          <h1 className="text-4xl sm:text-5xl font-bold text-primary-500 mb-3">
             🇩🇪 German Vocabulary
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <p className="text-primary-200 text-lg">
             Build your German vocabulary collection
           </p>
         </div>
@@ -106,22 +96,25 @@ export default function Home() {
           </div>
         )}
 
-        {!authReady ? (
+        {!user ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
             <p className="text-gray-600 dark:text-gray-400 mt-4">Connecting...</p>
           </div>
         ) : (
           <>
-            <AddWordForm onAddWord={handleAddWord} />
-
+            <div className="card p-6 mb-6 bg-primary-200 border-primary-400 text-germanblack">
+              <AddWordForm onAddWord={handleAddWord} />
+            </div>
             {loading ? (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
                 <p className="text-gray-600 dark:text-gray-400 mt-4">Loading vocabulary...</p>
               </div>
             ) : (
-              <WordList words={words} onDeleteWord={handleDeleteWord} />
+              <div className="card p-6 bg-primary-200 border-primary-400 text-germanblack">
+                <WordList words={words} onDeleteWord={handleDeleteWord} />
+              </div>
             )}
           </>
         )}

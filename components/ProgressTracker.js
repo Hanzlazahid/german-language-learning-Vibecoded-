@@ -68,7 +68,7 @@ const ProgressTracker = ({ words }) => {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl shadow-2xl p-8 text-white"
+        className="bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl shadow-2xl p-8 text-germanblack"
       >
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -79,9 +79,9 @@ const ProgressTracker = ({ words }) => {
           </div>
           <div className="text-5xl font-bold opacity-90">{totalWords}</div>
         </div>
-        <div className="w-full bg-primary-700 rounded-full h-4 mt-4">
+        <div className="w-full bg-primary-200 rounded-full h-4 mt-4">
           <motion.div
-            className="bg-white h-4 rounded-full shadow-lg"
+            className="bg-accent-500 h-4 rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${(totalWords / 250) * 100}%` }}
             transition={{ duration: 1, ease: 'easeOut' }}
@@ -100,21 +100,21 @@ const ProgressTracker = ({ words }) => {
           icon={BookOpen}
           title="Total Vocabulary"
           value={totalWords}
-          color="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+          color="bg-primary-100 text-germanblack"
           subtitle="Words in your collection"
         />
         <StatCard
           icon={Target}
           title="Learning Goal"
           value="250"
-          color="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
+          color="bg-primary-200 text-germanblack"
           subtitle={`${Math.round((totalWords / 250) * 100)}% complete`}
         />
         <StatCard
           icon={TrendingUp}
           title="Progress Rate"
           value={levelInfo.level}
-          color="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+          color="bg-accent-500/10 text-accent-500"
           subtitle="Current level"
         />
       </div>
@@ -138,9 +138,9 @@ const ProgressTracker = ({ words }) => {
                     {count} ({percentage.toFixed(1)}%)
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                <div className="w-full bg-primary-200 rounded-full h-3">
                   <motion.div
-                    className="bg-primary-500 h-3 rounded-full"
+                    className="bg-accent-500 h-3 rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}

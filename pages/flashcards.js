@@ -8,27 +8,20 @@ import { getWords } from '@/lib/firestoreService';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-export default function FlashcardsPage() {
+export default function FlashcardsPage({ user }) {
   const [words, setWords] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
-    // Wait for authentication before loading words
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthReady(true);
-        loadWords();
-      }
-    });
+    if (user) {
+      loadWords(user.uid);
+    }
+  }, [user]);
 
-    return () => unsubscribe();
-  }, []);
-
-  const loadWords = async () => {
+  const loadWords = async (uid) => {
     try {
       setLoading(true);
-      const fetchedWords = await getWords();
+      const fetchedWords = await getWords(uid);
       setWords(fetchedWords);
     } catch (err) {
       console.error('Error loading words:', err);
@@ -58,11 +51,11 @@ export default function FlashcardsPage() {
           </p>
         </div>
 
-        {!authReady || loading ? (
+        {!user || loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
             <p className="text-gray-600 dark:text-gray-400 mt-4">
-              {!authReady ? 'Connecting...' : 'Loading flashcards...'}
+              {!user ? 'Connecting...' : 'Loading flashcards...'}
             </p>
           </div>
         ) : (
