@@ -76,13 +76,13 @@ const Flashcards = ({ words }) => {
     <div className="max-w-3xl mx-auto">
       {/* Header with Controls */}
       <div className="flex flex-wrap justify-between items-center mb-6 gap-3">
-        <div className="text-lg font-semibold text-primary-500">
+        <div className="text-lg font-semibold text-gray-700 dark:text-gray-300">
           Card {currentIndex + 1} of {shuffledWords.length}
         </div>
         <div className="flex space-x-2">
           <button
             onClick={resetProgress}
-            className="flex items-center space-x-2 px-4 py-2 bg-primary-100 hover:bg-primary-200 text-germanblack rounded-lg transition-all"
+            className="flex items-center space-x-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all"
             title="Reset to first card"
           >
             <RotateCcw className="w-4 h-4" />
@@ -90,7 +90,7 @@ const Flashcards = ({ words }) => {
           </button>
           <button
             onClick={shuffleCards}
-            className="flex items-center space-x-2 px-4 py-2 bg-primary-500 hover:bg-accent-500 text-germanblack rounded-lg transition-all"
+            className="flex items-center space-x-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-all"
             title="Shuffle cards"
           >
             <Shuffle className="w-4 h-4" />
@@ -100,7 +100,7 @@ const Flashcards = ({ words }) => {
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-primary-200 rounded-full h-2 mb-8">
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-8">
         <motion.div
           className="bg-primary-500 h-2 rounded-full"
           initial={{ width: 0 }}
@@ -124,7 +124,7 @@ const Flashcards = ({ words }) => {
               animate={{ rotateY: 0, opacity: 1 }}
               exit={{ rotateY: -90, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 bg-primary-200 rounded-2xl shadow-2xl p-8 flex flex-col justify-center items-center border-2 border-primary-400"
+              className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 flex flex-col justify-center items-center border-2 border-gray-200 dark:border-gray-700"
             >
               {!isFlipped ? (
                 // Front: German
@@ -145,7 +145,7 @@ const Flashcards = ({ words }) => {
                       e.stopPropagation();
                       speakGerman(currentWord.german);
                     }}
-                    className="p-3 bg-primary-100 hover:bg-primary-200 rounded-full transition-colors"
+                    className="p-3 bg-primary-100 dark:bg-primary-900/30 hover:bg-primary-200 dark:hover:bg-primary-900/50 rounded-full transition-colors"
                   >
                     <Volume2 className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                   </button>
@@ -165,7 +165,7 @@ const Flashcards = ({ words }) => {
                       {currentWord.tags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="text-sm bg-accent-500/10 text-accent-500 px-3 py-1 rounded"
+                          className="text-sm bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1 rounded"
                         >
                           #{tag}
                         </span>
@@ -187,7 +187,7 @@ const Flashcards = ({ words }) => {
         <button
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          className="flex items-center space-x-2 px-6 py-3 bg-primary-100 hover:bg-primary-200 text-germanblack rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-100"
+          className="flex items-center space-x-2 px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-200 dark:disabled:hover:bg-gray-700"
         >
           <ChevronLeft className="w-5 h-5" />
           <span className="hidden sm:inline">Previous</span>
@@ -202,7 +202,7 @@ const Flashcards = ({ words }) => {
         <button
           onClick={handleNext}
           disabled={currentIndex === shuffledWords.length - 1}
-          className="flex items-center space-x-2 px-6 py-3 bg-primary-100 hover:bg-primary-200 text-germanblack rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-100"
+          className="flex items-center space-x-2 px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-200 dark:disabled:hover:bg-gray-700"
         >
           <span className="hidden sm:inline">Next</span>
           <ChevronRight className="w-5 h-5" />

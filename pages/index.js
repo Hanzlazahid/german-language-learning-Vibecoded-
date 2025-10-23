@@ -82,10 +82,10 @@ export default function Home({ user }) {
 
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold text-primary-500 mb-3">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white mb-3">
             🇩🇪 German Vocabulary
           </h1>
-          <p className="text-primary-200 text-lg">
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
             Build your German vocabulary collection
           </p>
         </div>
@@ -103,18 +103,14 @@ export default function Home({ user }) {
           </div>
         ) : (
           <>
-            <div className="card p-6 mb-6 bg-primary-200 border-primary-400 text-germanblack">
-              <AddWordForm onAddWord={handleAddWord} />
-            </div>
+            <AddWordForm onAddWord={handleAddWord} />
             {loading ? (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
                 <p className="text-gray-600 dark:text-gray-400 mt-4">Loading vocabulary...</p>
               </div>
             ) : (
-              <div className="card p-6 bg-primary-200 border-primary-400 text-germanblack">
-                <WordList words={words} onDeleteWord={handleDeleteWord} />
-              </div>
+              <WordList words={words} onDeleteWord={handleDeleteWord} />
             )}
           </>
         )}

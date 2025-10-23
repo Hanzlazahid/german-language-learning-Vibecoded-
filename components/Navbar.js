@@ -26,13 +26,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-germanblack shadow-md sticky top-0 z-50 transition-colors duration-300">
+    <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <span className="text-2xl">🇩🇪</span>
-            <span className="text-xl font-bold text-primary-500 group-hover:text-accent-500 transition-colors">
+            <span className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
               Deutsch Lernen
             </span>
           </Link>
@@ -48,8 +48,8 @@ const Navbar = () => {
                   href={item.path}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
                     isActive
-                      ? 'bg-primary-500 text-germanblack shadow-md'
-                      : 'text-primary-500 hover:bg-accent-500 hover:text-white'
+                      ? 'bg-primary-500 text-white shadow-md'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <span className="text-lg">{item.emoji}</span>
@@ -63,18 +63,18 @@ const Navbar = () => {
           <div className="flex items-center space-x-2">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-primary-50 hover:bg-primary-100 transition-colors"
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               aria-label="Toggle theme"
             >
               {isDark ? (
                 <Sun className="w-5 h-5 text-yellow-400" />
               ) : (
-                <Moon className="w-5 h-5 text-germanblack" />
+                <Moon className="w-5 h-5 text-gray-600" />
               )}
             </button>
             <button
               onClick={handleLogout}
-              className="ml-2 px-3 py-1 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-semibold transition"
+              className="ml-2 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition"
             >
               Logout
             </button>

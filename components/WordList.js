@@ -61,7 +61,7 @@ const WordList = ({ words, onDeleteWord }) => {
   return (
     <div className="space-y-4">
       {/* Search and Filter Bar */}
-      <div className="flex flex-col sm:flex-row gap-3 bg-primary-200 p-4 rounded-xl shadow-md border border-primary-400 text-germanblack">
+      <div className="flex flex-col sm:flex-row gap-3 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md">
         {/* Search Input */}
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -97,7 +97,7 @@ const WordList = ({ words, onDeleteWord }) => {
 
       {/* Words Grid */}
       {filteredWords.length === 0 ? (
-        <div className="text-center py-16 bg-primary-200 rounded-xl shadow-md border border-primary-400 text-germanblack">
+        <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-xl shadow-md">
           <p className="text-gray-500 dark:text-gray-400 text-lg">
             {words.length === 0 ? '📚 No words yet. Add your first word!' : '🔍 No matches found'}
           </p>
@@ -110,7 +110,7 @@ const WordList = ({ words, onDeleteWord }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-primary-200 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-primary-400 text-germanblack"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700"
             >
               <div className="p-5">
                 {/* Header with Gender and Type */}
@@ -146,7 +146,7 @@ const WordList = ({ words, onDeleteWord }) => {
                       <Volume2 className="w-5 h-5 text-primary-500 group-hover:text-primary-600 transition-colors" />
                     </button>
                   </div>
-                  <p className="text-xl font-bold text-germanblack break-words">
+                  <p className="text-xl font-bold text-gray-800 dark:text-white break-words">
                     {word.german}
                   </p>
                 </div>
@@ -154,7 +154,7 @@ const WordList = ({ words, onDeleteWord }) => {
                 {/* English Translation */}
                 <div className="mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
                   <span className="text-sm text-gray-500 dark:text-gray-400">🇬🇧 English</span>
-                  <p className="text-lg text-germanblack break-words">
+                  <p className="text-lg text-gray-700 dark:text-gray-300 break-words">
                     {word.english}
                   </p>
                 </div>

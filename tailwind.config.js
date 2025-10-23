@@ -10,25 +10,16 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#fff8e1',        // much deeper yellow
-          100: '#ffecb3',
-          200: '#ffe082',
-          300: '#ffd54f',
-          400: '#ffc107',      // deeper true gold
-          500: '#ffb300',      // deep gold for buttons, accents
-          600: '#ffa000',
-          700: '#ff8f00',
-          800: '#ff6f00',
-          900: '#b26a00',
-        },
-        accent: {
-          500: '#dd0000',      // German flag red
-          600: '#b30000',
-          700: '#7a0000',
-        },
-        germanblack: {
-          DEFAULT: '#000000',  // German flag black
-          900: '#000000',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
         },
         masculine: '#3b82f6',
         feminine: '#ef4444',
