@@ -2,26 +2,22 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { BookOpen, Layers, Brain, TrendingUp, Moon, Sun } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { BookOpen, Layers, Brain, TrendingUp, Moon, Sun, LogOut } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
-import { auth } from '@/lib/firebase';
-import { signOut } from 'firebase/auth';
+import { signOutUser } from '@/lib/authService';
 
 const Navbar = () => {
-  const pathname = usePathname();
+  const { pathname } = useRouter();
   const { isDark, toggleTheme } = useTheme();
 
   const navItems = [
-    { name: 'Words', path: '/', icon: BookOpen, emoji: '📘' },
-    { name: 'Flashcards', path: '/flashcards', icon: Layers, emoji: '💬' },
-    { name: 'Quiz', path: '/quiz', icon: Brain, emoji: '🧠' },
-    { name: 'Progress', path: '/progress', icon: TrendingUp, emoji: '📊' },
+    { name: 'Words', path: '/', icon: BookOpen },
+    { name: 'Flashcards', path: '/flashcards', icon: Layers },
   ];
 
   const handleLogout = async () => {
-    await signOut(auth);
-    localStorage.removeItem('authToken');
+    await signOutUser();
     window.location.reload();
   };
 
@@ -52,8 +48,8 @@ const Navbar = () => {
                       : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
-                  <span className="text-lg">{item.emoji}</span>
-                  <span className="font-medium">{item.name}</span>
+                  <Icon className="w-4 h-4" />
+                  <span className="font-medium ml-1">{item.name}</span>
                 </Link>
               );
             })}
@@ -74,9 +70,10 @@ const Navbar = () => {
             </button>
             <button
               onClick={handleLogout}
-              className="ml-2 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition"
+              className="ml-2 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition flex items-center space-x-1"
             >
-              Logout
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
             </button>
           </div>
         </div>
@@ -85,6 +82,7 @@ const Navbar = () => {
         <div className="md:hidden flex overflow-x-auto pb-3 space-x-2 scrollbar-hide">
           {navItems.map((item) => {
             const isActive = pathname === item.path;
+            const Icon = item.icon;
             return (
               <Link
                 key={item.path}
@@ -95,7 +93,7 @@ const Navbar = () => {
                     : 'text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700'
                 }`}
               >
-                <span className="text-xl mb-1">{item.emoji}</span>
+                <Icon className="w-5 h-5 mb-1" />
                 <span className="text-xs font-medium whitespace-nowrap">{item.name}</span>
               </Link>
             );

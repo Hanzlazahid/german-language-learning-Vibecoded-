@@ -5,10 +5,10 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Flashcards from '@/components/Flashcards';
 import { getWords } from '@/lib/firestoreService';
-import { auth } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useRequireAuth } from '@/utils/authGuard';
 
-export default function FlashcardsPage({ user }) {
+export default function FlashcardsPage() {
+  const { user, checking } = useRequireAuth();
   const [words, setWords] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,11 +25,6 @@ export default function FlashcardsPage({ user }) {
       setWords(fetchedWords);
     } catch (err) {
       console.error('Error loading words:', err);
-      // Fallback to localStorage
-      const localWords = localStorage.getItem('germanWords');
-      if (localWords) {
-        setWords(JSON.parse(localWords));
-      }
     } finally {
       setLoading(false);
     }
@@ -51,7 +46,12 @@ export default function FlashcardsPage({ user }) {
           </p>
         </div>
 
-        {!user || loading ? (
+        {checking ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
+            <p className="text-gray-600 dark:text-gray-400 mt-4">Checking session...</p>
+          </div>
+        ) : !user || loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
             <p className="text-gray-600 dark:text-gray-400 mt-4">
