@@ -1,19 +1,26 @@
 // components/Navbar.js
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { BookOpen, Layers, Brain, TrendingUp, Moon, Sun, LogOut } from 'lucide-react';
+import { BookOpen, Layers, Calendar, Moon, Sun, LogOut } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { signOutUser } from '@/lib/authService';
 
 const Navbar = () => {
-  const { pathname } = useRouter();
+  const router = useRouter();
+  const [pathname, setPathname] = useState('/');
   const { isDark, toggleTheme } = useTheme();
 
+  useEffect(() => {
+    setPathname(router.pathname);
+  }, [router.pathname]);
+
   const navItems = [
-    { name: 'Words', path: '/', icon: BookOpen },
+    { name: 'Word Bank', path: '/', icon: BookOpen },
     { name: 'Flashcards', path: '/flashcards', icon: Layers },
+    { name: 'Essentials', path: '/essentials', icon: Calendar },
   ];
 
   const handleLogout = async () => {
