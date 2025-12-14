@@ -4,23 +4,39 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { BookOpen, Layers, Calendar, Moon, Sun, LogOut } from 'lucide-react';
+import { BookOpen, Layers, Calendar, Moon, Sun, LogOut, ChevronDown, Brain, Calculator, FileText } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { signOutUser } from '@/lib/authService';
 
 const Navbar = () => {
   const router = useRouter();
   const [pathname, setPathname] = useState('/');
+  const [exercisesDropdownOpen, setExercisesDropdownOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
     setPathname(router.pathname);
   }, [router.pathname]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (exercisesDropdownOpen && !event.target.closest('.exercises-dropdown')) {
+        setExercisesDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [exercisesDropdownOpen]);
+
   const navItems = [
     { name: 'Word Bank', path: '/', icon: BookOpen },
-    { name: 'Flashcards', path: '/flashcards', icon: Layers },
     { name: 'Essentials', path: '/essentials', icon: Calendar },
+  ];
+
+  const exercisesItems = [
+    { name: 'Flashcards', path: '/flashcards', icon: Layers },
+    { name: 'Numbers Practice', path: '/calculation', icon: Calculator },
+    { name: 'Paragraph Writing', path: '/paragraph-writing', icon: FileText },
   ];
 
   const handleLogout = async () => {
@@ -41,7 +57,7 @@ const Navbar = () => {
           </Link>
 
           {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex space-x-1">
+          <div className="hidden md:flex space-x-1 items-center">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.path;
@@ -60,6 +76,46 @@ const Navbar = () => {
                 </Link>
               );
             })}
+            
+            {/* Exercises Dropdown */}
+            <div className="relative exercises-dropdown">
+              <button
+                onClick={() => setExercisesDropdownOpen(!exercisesDropdownOpen)}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                  exercisesItems.some(item => pathname === item.path)
+                    ? 'bg-primary-500 text-white shadow-md'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                <Brain className="w-4 h-4" />
+                <span className="font-medium ml-1">Exercises</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${exercisesDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {exercisesDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                  {exercisesItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = pathname === item.path;
+                    return (
+                      <Link
+                        key={item.path}
+                        href={item.path}
+                        onClick={() => setExercisesDropdownOpen(false)}
+                        className={`flex items-center space-x-2 px-4 py-2 transition-colors ${
+                          isActive
+                            ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        }`}
+                      >
+                        <Icon className="w-4 h-4" />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Theme Toggle & Logout */}
@@ -105,6 +161,45 @@ const Navbar = () => {
               </Link>
             );
           })}
+          
+          {/* Exercises Dropdown - Mobile */}
+          <div className="relative exercises-dropdown">
+            <button
+              onClick={() => setExercisesDropdownOpen(!exercisesDropdownOpen)}
+              className={`flex flex-col items-center justify-center min-w-[80px] px-3 py-2 rounded-lg transition-all ${
+                exercisesItems.some(item => pathname === item.path)
+                  ? 'bg-primary-500 text-white shadow-md'
+                  : 'text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700'
+              }`}
+            >
+              <Brain className="w-5 h-5 mb-1" />
+              <span className="text-xs font-medium whitespace-nowrap">Exercises</span>
+            </button>
+            
+            {exercisesDropdownOpen && (
+              <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                {exercisesItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.path;
+                  return (
+                    <Link
+                      key={item.path}
+                      href={item.path}
+                      onClick={() => setExercisesDropdownOpen(false)}
+                      className={`flex items-center space-x-2 px-4 py-2 transition-colors ${
+                        isActive
+                          ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>

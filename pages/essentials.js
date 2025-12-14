@@ -159,12 +159,65 @@ const numbers = [
   { german: 'hundert', english: 'one hundred', example: 'Hundert Jahre sind ein Jahrhundert. (One hundred years is a century.)' },
 ];
 
+const colors = [
+  { german: 'rot', english: 'red', example: 'Die Rose ist rot. (The rose is red.)' },
+  { german: 'blau', english: 'blue', example: 'Der Himmel ist blau. (The sky is blue.)' },
+  { german: 'grün', english: 'green', example: 'Das Gras ist grün. (The grass is green.)' },
+  { german: 'gelb', english: 'yellow', example: 'Die Sonne ist gelb. (The sun is yellow.)' },
+  { german: 'orange', english: 'orange', example: 'Die Orange ist orange. (The orange is orange.)' },
+  { german: 'lila', english: 'purple', example: 'Die Blume ist lila. (The flower is purple.)' },
+  { german: 'rosa', english: 'pink', example: 'Das Kleid ist rosa. (The dress is pink.)' },
+  { german: 'schwarz', english: 'black', example: 'Die Nacht ist schwarz. (The night is black.)' },
+  { german: 'weiß', english: 'white', example: 'Der Schnee ist weiß. (The snow is white.)' },
+  { german: 'grau', english: 'gray', example: 'Die Wolke ist grau. (The cloud is gray.)' },
+  { german: 'braun', english: 'brown', example: 'Der Baum ist braun. (The tree is brown.)' },
+  { german: 'beige', english: 'beige', example: 'Die Wand ist beige. (The wall is beige.)' },
+  { german: 'türkis', english: 'turquoise', example: 'Das Meer ist türkis. (The sea is turquoise.)' },
+  { german: 'gold', english: 'gold', example: 'Der Ring ist gold. (The ring is gold.)' },
+  { german: 'silber', english: 'silver', example: 'Die Münze ist silber. (The coin is silver.)' },
+];
+
+const alphabet = [
+  { german: 'A', english: 'A', example: 'A wie Apfel (A as in Apple)' },
+  { german: 'B', english: 'B', example: 'B wie Buch (B as in Book)' },
+  { german: 'C', english: 'C', example: 'C wie Computer (C as in Computer)' },
+  { german: 'D', english: 'D', example: 'D wie Deutsch (D as in German)' },
+  { german: 'E', english: 'E', example: 'E wie Elefant (E as in Elephant)' },
+  { german: 'F', english: 'F', example: 'F wie Fisch (F as in Fish)' },
+  { german: 'G', english: 'G', example: 'G wie Garten (G as in Garden)' },
+  { german: 'H', english: 'H', example: 'H wie Haus (H as in House)' },
+  { german: 'I', english: 'I', example: 'I wie Insel (I as in Island)' },
+  { german: 'J', english: 'J', example: 'J wie Jahr (J as in Year)' },
+  { german: 'K', english: 'K', example: 'K wie Katze (K as in Cat)' },
+  { german: 'L', english: 'L', example: 'L wie Liebe (L as in Love)' },
+  { german: 'M', english: 'M', example: 'M wie Mutter (M as in Mother)' },
+  { german: 'N', english: 'N', example: 'N wie Nacht (N as in Night)' },
+  { german: 'O', english: 'O', example: 'O wie Orange (O as in Orange)' },
+  { german: 'P', english: 'P', example: 'P wie Papier (P as in Paper)' },
+  { german: 'Q', english: 'Q', example: 'Q wie Qualität (Q as in Quality)' },
+  { german: 'R', english: 'R', example: 'R wie Rose (R as in Rose)' },
+  { german: 'S', english: 'S', example: 'S wie Sonne (S as in Sun)' },
+  { german: 'T', english: 'T', example: 'T wie Tisch (T as in Table)' },
+  { german: 'U', english: 'U', example: 'U wie Uhr (U as in Clock)' },
+  { german: 'V', english: 'V', example: 'V wie Vogel (V as in Bird)' },
+  { german: 'W', english: 'W', example: 'W wie Wasser (W as in Water)' },
+  { german: 'X', english: 'X', example: 'X wie Xylophon (X as in Xylophone)' },
+  { german: 'Y', english: 'Y', example: 'Y wie Yoga (Y as in Yoga)' },
+  { german: 'Z', english: 'Z', example: 'Z wie Zebra (Z as in Zebra)' },
+  { german: 'Ä', english: 'Ä', example: 'Ä wie Äpfel (Ä as in Apples)' },
+  { german: 'Ö', english: 'Ö', example: 'Ö wie Öl (Ö as in Oil)' },
+  { german: 'Ü', english: 'Ü', example: 'Ü wie Über (Ü as in Over)' },
+  { german: 'ß', english: 'ß (Eszett)', example: 'ß wie Straße (ß as in Street)' },
+];
+
 const sections = [
+  { id: 'alphabet', title: 'Alphabet (Alphabet)', items: alphabet },
+  { id: 'colors', title: 'Colors (Farben)', items: colors },
+  { id: 'numbers', title: 'Numbers (Zahlen)', items: numbers },
   { id: 'months', title: 'Months (Monate)', items: months },
   { id: 'weekdays', title: 'Weekdays (Wochentage)', items: weekdays },
   { id: 'timeExpressions', title: 'Time Expressions (Zeitausdrücke)', items: timeExpressions },
   { id: 'timeFormats', title: 'Telling Time (Uhrzeit)', items: timeFormats },
-  { id: 'numbers', title: 'Numbers (Zahlen)', items: numbers },
   { id: 'commonPhrases', title: 'Common Phrases (Häufige Phrasen)', items: commonPhrases },
 ];
 
@@ -250,7 +303,7 @@ export default function Essentials() {
             <span>Essentials</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Learn months, weekdays, time, numbers, and common phrases
+            Learn alphabet, colors, numbers, months, weekdays, time, and common phrases
           </p>
         </div>
 
