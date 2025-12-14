@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import GermanChat from '@/components/GermanChat';
 
 export default function App({ Component, pageProps }) {
   return (
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }) {
           <Component {...pageProps} />
         </main>
         <Footer />
+        <GermanChat />
       </div>
     </ThemeProvider>
   );

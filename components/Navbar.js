@@ -1,7 +1,7 @@
 // components/Navbar.js
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BookOpen, Layers, Calendar, Moon, Sun, LogOut, ChevronDown, Brain, Calculator, FileText } from 'lucide-react';
@@ -12,6 +12,8 @@ const Navbar = () => {
   const router = useRouter();
   const [pathname, setPathname] = useState('/');
   const [exercisesDropdownOpen, setExercisesDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const exercisesButtonRef = useRef(null);
   const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -142,7 +144,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Links - Mobile */}
-        <div className="md:hidden flex overflow-x-auto pb-3 space-x-2 scrollbar-hide">
+        <div className="md:hidden flex overflow-x-auto pb-3 space-x-2 scrollbar-hide relative z-50">
           {navItems.map((item) => {
             const isActive = pathname === item.path;
             const Icon = item.icon;
@@ -163,9 +165,33 @@ const Navbar = () => {
           })}
           
           {/* Exercises Dropdown - Mobile */}
-          <div className="relative exercises-dropdown">
+          <div className="relative exercises-dropdown flex-shrink-0">
             <button
-              onClick={() => setExercisesDropdownOpen(!exercisesDropdownOpen)}
+              ref={exercisesButtonRef}
+              onClick={() => {
+                if (exercisesButtonRef.current) {
+                  const rect = exercisesButtonRef.current.getBoundingClientRect();
+                  const dropdownWidth = 192; // w-48 = 12rem = 192px
+                  const viewportWidth = window.innerWidth;
+                  const padding = 16; // 1rem padding from edges
+                  
+                  let left = rect.left;
+                  // If dropdown would overflow right edge, adjust it
+                  if (left + dropdownWidth > viewportWidth - padding) {
+                    left = viewportWidth - dropdownWidth - padding;
+                  }
+                  // Ensure it doesn't go off the left edge either
+                  if (left < padding) {
+                    left = padding;
+                  }
+                  
+                  setDropdownPosition({
+                    top: rect.bottom + 8,
+                    left: left
+                  });
+                }
+                setExercisesDropdownOpen(!exercisesDropdownOpen);
+              }}
               className={`flex flex-col items-center justify-center min-w-[80px] px-3 py-2 rounded-lg transition-all ${
                 exercisesItems.some(item => pathname === item.path)
                   ? 'bg-primary-500 text-white shadow-md'
@@ -175,33 +201,47 @@ const Navbar = () => {
               <Brain className="w-5 h-5 mb-1" />
               <span className="text-xs font-medium whitespace-nowrap">Exercises</span>
             </button>
-            
-            {exercisesDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                {exercisesItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = pathname === item.path;
-                  return (
-                    <Link
-                      key={item.path}
-                      href={item.path}
-                      onClick={() => setExercisesDropdownOpen(false)}
-                      className={`flex items-center space-x-2 px-4 py-2 transition-colors ${
-                        isActive
-                          ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span>{item.name}</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
           </div>
         </div>
       </div>
+      
+      {/* Mobile Dropdown - Rendered outside scrollable container */}
+      {exercisesDropdownOpen && (
+        <>
+          {/* Backdrop for mobile */}
+          <div 
+            className="fixed inset-0 bg-black/20 z-[99] md:hidden"
+            onClick={() => setExercisesDropdownOpen(false)}
+          />
+          <div 
+            className="fixed md:hidden bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-1 z-[100] w-48 max-h-[60vh] overflow-y-auto"
+            style={{
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`
+            }}
+          >
+            {exercisesItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  onClick={() => setExercisesDropdownOpen(false)}
+                  className={`flex items-center space-x-2 px-4 py-3 transition-colors ${
+                    isActive
+                      ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </>
+      )}
     </nav>
   );
 };
