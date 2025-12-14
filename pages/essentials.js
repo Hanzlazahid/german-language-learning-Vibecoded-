@@ -1,12 +1,11 @@
 // pages/essentials.js
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
-import { Calendar, Volume2, Search } from 'lucide-react';
+import { Calendar, Volume2 } from 'lucide-react';
 import { useRequireAuth } from '@/utils/authGuard';
 import { speakGerman } from '@/lib/speechService';
-import UmlautToolbar from '@/components/UmlautToolbar';
 
 const months = [
   { german: 'Januar', english: 'January', example: 'Im Januar ist es kalt. (In January it is cold.)' },
@@ -210,10 +209,18 @@ const alphabet = [
   { german: 'ß', english: 'ß (Eszett)', example: 'ß wie Straße (ß as in Street)' },
 ];
 
+const seasons = [
+  { german: 'Frühling', english: 'Spring', example: 'Im Frühling blühen die Blumen. (In spring, the flowers bloom.)' },
+  { german: 'Sommer', english: 'Summer', example: 'Im Sommer ist es warm. (In summer it is warm.)' },
+  { german: 'Herbst', english: 'Autumn / Fall', example: 'Im Herbst fallen die Blätter. (In autumn, the leaves fall.)' },
+  { german: 'Winter', english: 'Winter', example: 'Im Winter schneit es. (In winter it snows.)' },
+];
+
 const sections = [
   { id: 'alphabet', title: 'Alphabet (Alphabet)', items: alphabet },
   { id: 'colors', title: 'Colors (Farben)', items: colors },
   { id: 'numbers', title: 'Numbers (Zahlen)', items: numbers },
+  { id: 'seasons', title: 'Seasons (Jahreszeiten)', items: seasons },
   { id: 'months', title: 'Months (Monate)', items: months },
   { id: 'weekdays', title: 'Weekdays (Wochentage)', items: weekdays },
   { id: 'timeExpressions', title: 'Time Expressions (Zeitausdrücke)', items: timeExpressions },
@@ -221,9 +228,9 @@ const sections = [
   { id: 'commonPhrases', title: 'Common Phrases (Häufige Phrasen)', items: commonPhrases },
 ];
 
-const SectionCard = ({ title, items }) => {
+const SectionCard = ({ id, title, items }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+    <div id={id} className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{title}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item, index) => (
@@ -263,8 +270,47 @@ const SectionCard = ({ title, items }) => {
 
 export default function Essentials() {
   const { user, checking } = useRequireAuth();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchInputRef, setSearchInputRef] = useState(null);
+  const [activeSection, setActiveSection] = useState(sections[0]?.id || '');
+  const sectionRefs = useRef({});
+
+  useEffect(() => {
+    // Set initial active section
+    if (sections.length > 0) {
+      setActiveSection(sections[0].id);
+    }
+
+    // Scroll spy to highlight active section
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150; // Offset for sticky tabs
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        const element = document.getElementById(section.id);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(section.id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100; // Offset for sticky tabs
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+      setActiveSection(sectionId);
+    }
+  };
 
   if (checking || !user) {
     return (
@@ -276,19 +322,6 @@ export default function Essentials() {
       </div>
     );
   }
-
-  const filteredSections = sections.filter((section) => {
-    if (!searchTerm) return true;
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      section.title.toLowerCase().includes(searchLower) ||
-      section.items.some(
-        (item) =>
-          item.german.toLowerCase().includes(searchLower) ||
-          item.english.toLowerCase().includes(searchLower)
-      )
-    );
-  });
 
   return (
     <>
@@ -303,41 +336,38 @@ export default function Essentials() {
             <span>Essentials</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Learn alphabet, colors, numbers, months, weekdays, time, and common phrases
+            Learn alphabet, colors, numbers, seasons, months, weekdays, time, and common phrases
           </p>
         </div>
 
-        {/* Search Bar */}
-        <div className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              ref={setSearchInputRef}
-              type="text"
-              placeholder="Search by section name (e.g., Months, Numbers, Time)..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-12 pl-10 pr-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all"
-            />
+        {/* Section Tabs */}
+        <div className="sticky top-16 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 mb-6 -mx-4 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex overflow-x-auto scrollbar-hide gap-2 py-4">
+              {sections.map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${
+                    activeSection === section.id
+                      ? 'bg-primary-500 text-white shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {section.title.split(' (')[0]}
+                </button>
+              ))}
+            </div>
           </div>
-          {searchInputRef && <UmlautToolbar targetRef={searchInputRef} />}
         </div>
 
-        {filteredSections.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-            <p className="text-gray-500 dark:text-gray-400 text-lg">
-              No sections found matching "{searchTerm}"
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {filteredSections.map((section) => (
-              <SectionCard key={section.id} title={section.title} items={section.items} />
-            ))}
-          </div>
-        )}
+        {/* Sections */}
+        <div className="space-y-8">
+          {sections.map((section) => (
+            <SectionCard key={section.id} id={section.id} title={section.title} items={section.items} />
+          ))}
+        </div>
       </div>
     </>
   );
 }
-
