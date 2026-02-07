@@ -57,6 +57,19 @@ export default function Home() {
       setError('You are offline. Connect to the internet to add words.');
       return;
     }
+    
+    // Check if word already exists (case-insensitive comparison)
+    const germanText = wordData.german.trim().toLowerCase();
+    const existingWord = words.find(
+      (word) => word.german && word.german.trim().toLowerCase() === germanText
+    );
+    
+    if (existingWord) {
+      const errorMessage = 'This word is already added.';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    }
+    
     try {
       const newWord = await addWord(user.uid, wordData);
       setWords([newWord, ...words]);
