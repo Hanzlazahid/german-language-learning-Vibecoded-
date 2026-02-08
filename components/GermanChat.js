@@ -15,8 +15,10 @@ const GermanChat = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const chatContainerRef = useRef(null);
   const { isDark } = useTheme();
 
   // Auto-scroll to bottom when new messages arrive
@@ -26,12 +28,51 @@ const GermanChat = () => {
     }
   }, [messages, isOpen]);
 
-  // Focus input when chat opens
+  // Detect mobile device and handle keyboard
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      setIsMobile(mobile);
+      return mobile;
+    };
+    const isMobileDevice = checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    // Handle visual viewport changes (keyboard open/close)
+    let viewportHandler = null;
+    if (window.visualViewport && isMobileDevice) {
+      viewportHandler = () => {
+        if (inputRef.current && document.activeElement === inputRef.current) {
+          setTimeout(() => {
+            inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 100);
+        }
+      };
+      window.visualViewport.addEventListener('resize', viewportHandler);
+    }
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (window.visualViewport && viewportHandler) {
+        window.visualViewport.removeEventListener('resize', viewportHandler);
+      }
+    };
+  }, []);
+
+  // Focus input when chat opens and scroll input into view on mobile
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => {
+        inputRef.current?.focus();
+        // On mobile, scroll input into view when keyboard opens
+        if (isMobile) {
+          setTimeout(() => {
+            inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
+      }, 100);
     }
-  }, [isOpen]);
+  }, [isOpen, isMobile]);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -40,6 +81,15 @@ const GermanChat = () => {
       inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`;
     }
   }, [inputMessage]);
+
+  // Handle input focus on mobile - scroll into view
+  const handleInputFocus = () => {
+    if (isMobile && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  };
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -124,7 +174,10 @@ const GermanChat = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-96 max-w-[calc(100vw-2rem)] h-[600px] max-h-[calc(100vh-8rem)] bg-white dark:bg-gray-800 rounded-lg shadow-2xl flex flex-col z-50 border border-gray-200 dark:border-gray-700">
+        <div 
+          ref={chatContainerRef}
+          className={`fixed ${isMobile ? 'inset-0 w-full h-full rounded-none' : 'bottom-6 right-6 w-96 max-w-[calc(100vw-2rem)] h-[600px] max-h-[calc(100vh-8rem)] rounded-lg'} bg-white dark:bg-gray-800 shadow-2xl flex flex-col z-50 border border-gray-200 dark:border-gray-700`}
+        >
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-yellow-600 text-white rounded-t-lg">
             <div className="flex items-center space-x-2">
@@ -141,7 +194,7 @@ const GermanChat = () => {
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900" style={{ WebkitOverflowScrolling: 'touch' }}>
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -176,6 +229,7 @@ const GermanChat = () => {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
+                onFocus={handleInputFocus}
                 placeholder="Ask about German language... (Shift+Enter for new line)"
                 className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 resize-none min-h-[40px] max-h-[120px]"
                 disabled={isLoading}
