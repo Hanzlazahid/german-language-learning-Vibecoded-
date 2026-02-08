@@ -33,6 +33,14 @@ const GermanChat = () => {
     }
   }, [isOpen]);
 
+  // Auto-resize textarea
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`;
+    }
+  }, [inputMessage]);
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     
@@ -44,6 +52,9 @@ const GermanChat = () => {
     // Add user message to chat
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
+    
+    // Refocus input after sending
+    setTimeout(() => inputRef.current?.focus(), 100);
 
     try {
       // Build conversation history (last 10 messages for context)
@@ -84,7 +95,18 @@ const GermanChat = () => {
       }]);
     } finally {
       setIsLoading(false);
+      // Refocus input after response
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
+  };
+
+  const handleKeyDown = (e) => {
+    // If Enter is pressed without Shift, send the message
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage(e);
+    }
+    // Shift+Enter will allow new line (default behavior)
   };
 
   return (
@@ -149,19 +171,20 @@ const GermanChat = () => {
           {/* Input Area */}
           <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
             <div className="flex space-x-2">
-              <input
+              <textarea
                 ref={inputRef}
-                type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Ask about German language..."
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                onKeyDown={handleKeyDown}
+                placeholder="Ask about German language... (Shift+Enter for new line)"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 resize-none min-h-[40px] max-h-[120px]"
                 disabled={isLoading}
+                rows={1}
               />
               <button
                 type="submit"
                 disabled={!inputMessage.trim() || isLoading}
-                className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center self-end"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
