@@ -216,6 +216,295 @@ const seasons = [
   { german: 'Winter', english: 'Winter', example: 'Im Winter schneit es. (In winter it snows.)' },
 ];
 
+const bodyParts = [
+  { german: 'der Kopf', english: 'the head', example: 'Ich habe Kopfschmerzen. (I have a headache.)' },
+  { german: 'das Haar', english: 'the hair', example: 'Sie hat langes Haar. (She has long hair.)' },
+  { german: 'das Gesicht', english: 'the face', example: 'Er wäscht sein Gesicht. (He washes his face.)' },
+  { german: 'die Stirn', english: 'the forehead', example: 'Sie hat eine hohe Stirn. (She has a high forehead.)' },
+  { german: 'das Auge', english: 'the eye', example: 'Ich habe braune Augen. (I have brown eyes.)' },
+  { german: 'die Nase', english: 'the nose', example: 'Die Nase ist in der Mitte des Gesichts. (The nose is in the middle of the face.)' },
+  { german: 'der Mund', english: 'the mouth', example: 'Er öffnet den Mund. (He opens his mouth.)' },
+  { german: 'die Lippe', english: 'the lip', example: 'Sie trägt Lippenstift. (She wears lipstick.)' },
+  { german: 'der Zahn', english: 'the tooth', example: 'Ich putze meine Zähne. (I brush my teeth.)' },
+  { german: 'die Zunge', english: 'the tongue', example: 'Die Zunge schmeckt. (The tongue tastes.)' },
+  { german: 'das Ohr', english: 'the ear', example: 'Ich höre mit den Ohren. (I hear with my ears.)' },
+  { german: 'der Hals', english: 'the neck / throat', example: 'Mein Hals tut weh. (My throat hurts.)' },
+  { german: 'die Schulter', english: 'the shoulder', example: 'Er trägt eine Tasche auf der Schulter. (He carries a bag on his shoulder.)' },
+  { german: 'der Arm', english: 'the arm', example: 'Er hebt den Arm. (He raises his arm.)' },
+  { german: 'die Hand', english: 'the hand', example: 'Ich gebe dir die Hand. (I shake your hand.)' },
+  { german: 'der Finger', english: 'the finger', example: 'Ich habe zehn Finger. (I have ten fingers.)' },
+  { german: 'der Daumen', english: 'the thumb', example: 'Der Daumen ist der größte Finger. (The thumb is the biggest finger.)' },
+  { german: 'der Rücken', english: 'the back', example: 'Mein Rücken tut weh. (My back hurts.)' },
+  { german: 'die Brust', english: 'the chest / breast', example: 'Er hat Schmerzen in der Brust. (He has pain in his chest.)' },
+  { german: 'der Bauch', english: 'the stomach / belly', example: 'Mein Bauch ist voll. (My stomach is full.)' },
+  { german: 'die Taille', english: 'the waist', example: 'Sie hat eine schmale Taille. (She has a narrow waist.)' },
+  { german: 'das Bein', english: 'the leg', example: 'Ich habe lange Beine. (I have long legs.)' },
+  { german: 'das Knie', english: 'the knee', example: 'Mein Knie tut weh. (My knee hurts.)' },
+  { german: 'der Fuß', english: 'the foot', example: 'Ich trage Schuhe an den Füßen. (I wear shoes on my feet.)' },
+  { german: 'die Zehe', english: 'the toe', example: 'Ich habe zehn Zehen. (I have ten toes.)' },
+];
+
+const articleRulesDer = [
+  { category: 'Male persons, professions, animals', examples: ['der Mann (the man)', 'der Lehrer (the teacher)', 'der Hund (the dog)'] },
+  { category: 'Seasons, months, days of the week', examples: ['der Sommer (the summer)', 'der Januar (January)', 'der Montag (Monday)'] },
+  { category: 'Cardinal directions', examples: ['der Norden (the north)', 'der Süden (the south)', 'der Osten (the east)', 'der Westen (the west)'] },
+  { category: 'Times of day (except die Nacht)', examples: ['der Morgen (the morning)', 'der Mittag (noon)', 'der Abend (evening)'] },
+  { category: 'Weather elements', examples: ['der Regen (the rain)', 'der Schnee (the snow)', 'der Wind (the wind)', 'der Nebel (the fog)'] },
+  { category: 'Alcoholic drinks', examples: ['der Wein (the wine)', 'der Whisky (the whisky)', 'der Schnaps (the schnapps)'] },
+  { category: 'Nouns ending with -ling, -ismus, -or, -ig, -ich, -ant', examples: ['der Lehrling (apprentice)', 'der Optimismus (optimism)', 'der Motor (motor)', 'der König (king)', 'der Teppich (carpet)', 'der Elefant (elephant)'] },
+  { category: 'Languages', examples: ['der Deutsch (German)', 'der Englisch (English)', 'der Französisch (French)'] },
+];
+
+const articleRulesDie = [
+  { category: 'Female persons, professions, animals', examples: ['die Frau (the woman)', 'die Lehrerin (female teacher)', 'die Katze (the cat)'] },
+  { category: 'Words ending with -heit, -keit, -ung, -schaft, -ion, -tät, -ik', examples: ['die Freiheit (freedom)', 'die Geschwindigkeit (speed)', 'die Mannschaft (team)', 'die Universität (university)', 'die Musik (music)', 'die Nation (nation)'] },
+  { category: 'Rivers in Germany', examples: ['die Elbe (the Elbe)', 'die Donau (the Danube)', 'die Rhein (the Rhine)'] },
+  { category: 'Flowers, trees, plants', examples: ['die Rose (the rose)', 'die Eiche (the oak)', 'die Tulpe (the tulip)'] },
+  { category: 'Names of motorcycles, ships, planes', examples: ['die Titanic (the Titanic)', 'die Boeing (the Boeing)'] },
+  { category: 'Nouns ending with -ie, -enz/-anz, -ur', examples: ['die Biologie (biology)', 'die Kompetenz (competence)', 'die Distanz (distance)', 'die Natur (nature)'] },
+];
+
+const articleRulesDas = [
+  { category: 'Diminutives ending in -chen, -lein', examples: ['das Mädchen (the girl)', 'das Fräulein (young lady)', 'das Häuschen (little house)'] },
+  { category: 'Words starting with Ge-', examples: ['das Geschenk (the gift)', 'das Gebäude (the building)', 'das Gebiet (the area)', 'das Gelände (the terrain)'] },
+  { category: 'Young humans or animals', examples: ['das Kind (the child)', 'das Fohlen (the foal)', 'das Lamm (the lamb)'] },
+  { category: 'Metals', examples: ['das Gold (gold)', 'das Silber (silver)', 'das Eisen (iron)'] },
+  { category: 'Colors', examples: ['das Blau (blue)', 'das Rot (red)', 'das Grün (green)'] },
+  { category: 'Hotels, cafes, cinemas, theaters', examples: ['das Kino (the cinema)', 'das Hotel (the hotel)', 'das Café (the café)', 'das Theater (the theater)'] },
+  { category: 'Nouns ending with -um, -ment, -tel, -tum, -ma', examples: ['das Zentrum (center)', 'das Element (element)', 'das Viertel (quarter)', 'das Christentum (Christianity)', 'das Thema (theme)'] },
+  { category: 'Infinitives used as nouns', examples: ['das Essen (eating/food)', 'das Trinken (drinking/drink)', 'das Singen (singing)', 'das Schreiben (writing)'] },
+];
+
+const personalPronouns = [
+  { german: 'ich', english: 'I', example: 'Ich lerne Deutsch. (I learn German.)' },
+  { german: 'du', english: 'you (singular, informal)', example: 'Du bist mein Freund. (You are my friend.)' },
+  { german: 'er / sie / es', english: 'he / she / it', example: 'Er liest ein Buch. (He reads a book.)' },
+  { german: 'wir', english: 'we', example: 'Wir gehen zur Schule. (We go to school.)' },
+  { german: 'ihr', english: 'you (plural, informal)', example: 'Ihr seid Studenten. (You are students.)' },
+  { german: 'sie', english: 'they', example: 'Sie sprechen Deutsch. (They speak German.)' },
+  { german: 'Sie', english: 'you (formal)', example: 'Sie sind sehr nett. (You are very nice.)' },
+];
+
+const strongVerbsAtoAe = [
+  {
+    infinitive: 'schlafen',
+    english: 'to sleep',
+    conjugations: {
+      ich: 'schlafe',
+      du: 'schläfst',
+      erSieEs: 'schläft',
+      wir: 'schlafen',
+      ihr: 'schlaft',
+      sie: 'schlafen'
+    },
+    vowelChange: 'a → ä'
+  },
+  {
+    infinitive: 'fahren',
+    english: 'to drive',
+    conjugations: {
+      ich: 'fahre',
+      du: 'fährst',
+      erSieEs: 'fährt',
+      wir: 'fahren',
+      ihr: 'fahrt',
+      sie: 'fahren'
+    },
+    vowelChange: 'a → ä'
+  },
+  {
+    infinitive: 'tragen',
+    english: 'to carry',
+    conjugations: {
+      ich: 'trage',
+      du: 'trägst',
+      erSieEs: 'trägt',
+      wir: 'tragen',
+      ihr: 'tragt',
+      sie: 'tragen'
+    },
+    vowelChange: 'a → ä'
+  },
+  {
+    infinitive: 'waschen',
+    english: 'to wash',
+    conjugations: {
+      ich: 'wasche',
+      du: 'wäschst',
+      erSieEs: 'wäscht',
+      wir: 'waschen',
+      ihr: 'wascht',
+      sie: 'waschen'
+    },
+    vowelChange: 'a → ä'
+  },
+  {
+    infinitive: 'fallen',
+    english: 'to fall',
+    conjugations: {
+      ich: 'falle',
+      du: 'fällst',
+      erSieEs: 'fällt',
+      wir: 'fallen',
+      ihr: 'fallt',
+      sie: 'fallen'
+    },
+    vowelChange: 'a → ä'
+  },
+  {
+    infinitive: 'fangen',
+    english: 'to catch',
+    conjugations: {
+      ich: 'fange',
+      du: 'fängst',
+      erSieEs: 'fängt',
+      wir: 'fangen',
+      ihr: 'fangt',
+      sie: 'fangen'
+    },
+    vowelChange: 'a → ä'
+  },
+];
+
+const strongVerbsEtoI = [
+  {
+    infinitive: 'sprechen',
+    english: 'to speak',
+    conjugations: {
+      ich: 'spreche',
+      du: 'sprichst',
+      erSieEs: 'spricht',
+      wir: 'sprechen',
+      ihr: 'sprecht',
+      sie: 'sprechen'
+    },
+    vowelChange: 'e → i'
+  },
+  {
+    infinitive: 'lesen',
+    english: 'to read',
+    conjugations: {
+      ich: 'lese',
+      du: 'liest',
+      erSieEs: 'liest',
+      wir: 'lesen',
+      ihr: 'lest',
+      sie: 'lesen'
+    },
+    vowelChange: 'e → ie'
+  },
+  {
+    infinitive: 'essen',
+    english: 'to eat',
+    conjugations: {
+      ich: 'esse',
+      du: 'isst',
+      erSieEs: 'isst',
+      wir: 'essen',
+      ihr: 'esst',
+      sie: 'essen'
+    },
+    vowelChange: 'e → i'
+  },
+];
+
+const strongVerbsOther = [
+  {
+    infinitive: 'werfen',
+    english: 'to throw',
+    conjugations: {
+      ich: 'werfe',
+      du: 'wirfst',
+      erSieEs: 'wirft',
+      wir: 'werfen',
+      ihr: 'werft',
+      sie: 'werfen'
+    },
+    vowelChange: 'e → i'
+  },
+  {
+    infinitive: 'sehen',
+    english: 'to see',
+    conjugations: {
+      ich: 'sehe',
+      du: 'siehst',
+      erSieEs: 'sieht',
+      wir: 'sehen',
+      ihr: 'seht',
+      sie: 'sehen'
+    },
+    vowelChange: 'e → ie'
+  },
+  {
+    infinitive: 'geben',
+    english: 'to give',
+    conjugations: {
+      ich: 'gebe',
+      du: 'gibst',
+      erSieEs: 'gibt',
+      wir: 'geben',
+      ihr: 'gebt',
+      sie: 'geben'
+    },
+    vowelChange: 'e → i'
+  },
+  {
+    infinitive: 'laufen',
+    english: 'to run',
+    conjugations: {
+      ich: 'laufe',
+      du: 'läufst',
+      erSieEs: 'läuft',
+      wir: 'laufen',
+      ihr: 'lauft',
+      sie: 'laufen'
+    },
+    vowelChange: 'au → äu'
+  },
+];
+
+const fundamentalVerbs = [
+  {
+    infinitive: 'haben',
+    english: 'to have',
+    conjugations: {
+      ich: 'habe',
+      du: 'hast',
+      erSieEs: 'hat',
+      wir: 'haben',
+      ihr: 'habt',
+      sie: 'haben'
+    },
+    highlightColor: 'yellow'
+  },
+  {
+    infinitive: 'sein',
+    english: 'to be',
+    conjugations: {
+      ich: 'bin',
+      du: 'bist',
+      erSieEs: 'ist',
+      wir: 'sind',
+      ihr: 'seid',
+      sie: 'sind'
+    },
+    highlightColor: 'green'
+  },
+  {
+    infinitive: 'werden',
+    english: 'will / would',
+    conjugations: {
+      ich: 'werde',
+      du: 'wirst',
+      erSieEs: 'wird',
+      wir: 'werden',
+      ihr: 'werdet',
+      sie: 'werden'
+    },
+    highlightColor: 'blue'
+  },
+];
+
 const sections = [
   { id: 'alphabet', title: 'Alphabet (Alphabet)', items: alphabet },
   { id: 'colors', title: 'Colors (Farben)', items: colors },
@@ -226,44 +515,207 @@ const sections = [
   { id: 'timeExpressions', title: 'Time Expressions (Zeitausdrücke)', items: timeExpressions },
   { id: 'timeFormats', title: 'Telling Time (Uhrzeit)', items: timeFormats },
   { id: 'commonPhrases', title: 'Common Phrases (Häufige Phrasen)', items: commonPhrases },
+  { id: 'bodyParts', title: 'Body Parts (Körperteile)', items: bodyParts },
+  { id: 'articleRulesDer', title: 'Article Rules: Der (Masculine)', items: articleRulesDer, type: 'articleRules' },
+  { id: 'articleRulesDie', title: 'Article Rules: Die (Feminine)', items: articleRulesDie, type: 'articleRules' },
+  { id: 'articleRulesDas', title: 'Article Rules: Das (Neuter)', items: articleRulesDas, type: 'articleRules' },
+  { id: 'personalPronouns', title: 'Personal Pronouns (Personalpronomen)', items: personalPronouns },
+  { id: 'fundamentalVerbs', title: 'Fundamental Verbs (Grundverben)', items: fundamentalVerbs, type: 'verbs' },
+  { id: 'strongVerbsAtoAe', title: 'Strong Verbs: a → ä (Starke Verben)', items: strongVerbsAtoAe, type: 'verbs' },
+  { id: 'strongVerbsEtoI', title: 'Strong Verbs: e → i/ie (Starke Verben)', items: strongVerbsEtoI, type: 'verbs' },
+  { id: 'strongVerbsOther', title: 'Strong Verbs: Other (Starke Verben)', items: strongVerbsOther, type: 'verbs' },
 ];
 
-const SectionCard = ({ id, title, items }) => {
+const highlightVowelChange = (text, vowelChange) => {
+  if (!vowelChange) return text;
+  
+  // Patterns to match and highlight - using word boundaries to be more precise
+  const patterns = {
+    'a → ä': /(ä)/g,
+    'e → i': /(i)/g,
+    'e → ie': /(ie)/g,
+    'au → äu': /(äu)/g,
+  };
+  
+  const pattern = patterns[vowelChange];
+  if (!pattern) return text;
+  
+  // Split text and highlight matches
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+  const regex = new RegExp(pattern.source, pattern.flags);
+  
+  while ((match = regex.exec(text)) !== null) {
+    // Add text before match
+    if (match.index > lastIndex) {
+      parts.push({ text: text.substring(lastIndex, match.index), highlight: false });
+    }
+    // Add highlighted match
+    parts.push({ text: match[0], highlight: true });
+    lastIndex = regex.lastIndex;
+  }
+  
+  // Add remaining text
+  if (lastIndex < text.length) {
+    parts.push({ text: text.substring(lastIndex), highlight: false });
+  }
+  
+  return parts.map((part, index) => {
+    if (part.highlight) {
+      return (
+        <span key={index} className="bg-yellow-300 dark:bg-yellow-700 px-1 rounded font-semibold">
+          {part.text}
+        </span>
+      );
+    }
+    return <span key={index}>{part.text}</span>;
+  });
+};
+
+const VerbCard = ({ verb }) => {
+  // Determine which forms have vowel changes (du and er/sie/es typically)
+  const formsWithChanges = ['du', 'erSieEs'];
+  
+  // Get highlight color class based on highlightColor
+  const getHighlightClass = (color) => {
+    switch (color) {
+      case 'yellow':
+        return 'bg-yellow-300 dark:bg-yellow-700';
+      case 'green':
+        return 'bg-green-300 dark:bg-green-700';
+      case 'blue':
+        return 'bg-blue-300 dark:bg-blue-700';
+      default:
+        return 'bg-yellow-300 dark:bg-yellow-700';
+    }
+  };
+  
+  const renderConjugation = (label, value, key) => {
+    const hasChange = formsWithChanges.includes(key);
+    
+    // If highlightColor is provided, highlight the entire conjugation
+    if (verb.highlightColor) {
+      return (
+        <div className="flex justify-between">
+          <span className="text-gray-600 dark:text-gray-400">{label}:</span>
+          <span className={`font-semibold ${getHighlightClass(verb.highlightColor)} px-1 rounded text-gray-800 dark:text-white`}>
+            {value}
+          </span>
+        </div>
+      );
+    }
+    
+    // Otherwise, use vowel change highlighting for strong verbs
+    return (
+      <div className="flex justify-between">
+        <span className="text-gray-600 dark:text-gray-400">{label}:</span>
+        <span className="font-semibold text-gray-800 dark:text-white">
+          {hasChange && verb.vowelChange ? highlightVowelChange(value, verb.vowelChange) : value}
+        </span>
+      </div>
+    );
+  };
+
   return (
-    <div id={id} className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{title}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {items.map((item, index) => (
-          <div
-            key={index}
-            className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <p className="text-xl font-bold text-gray-800 dark:text-white">{item.german}</p>
-                  <button
-                    onClick={() => speakGerman(item.german)}
-                    className="p-1 hover:bg-primary-100 dark:hover:bg-primary-900/20 rounded transition-colors"
-                    title="Pronounce"
-                  >
-                    <Volume2 className="w-4 h-4 text-primary-500" />
-                  </button>
-                </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{item.english}</p>
-                  {item.format && (
-                    <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-2 py-0.5 rounded">
-                      {item.format}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 italic">{item.example}</p>
+    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <p className="text-xl font-bold text-gray-800 dark:text-white">{verb.infinitive}</p>
+            <button
+              onClick={() => speakGerman(verb.infinitive)}
+              className="p-1 hover:bg-primary-100 dark:hover:bg-primary-900/20 rounded transition-colors"
+              title="Pronounce"
+            >
+              <Volume2 className="w-4 h-4 text-primary-500" />
+            </button>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{verb.english}</p>
+          {verb.vowelChange && (
+            <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded">
+              {verb.vowelChange}
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="space-y-1 text-sm">
+        {renderConjugation('ich', verb.conjugations.ich, 'ich')}
+        {renderConjugation('du', verb.conjugations.du, 'du')}
+        {renderConjugation('er/sie/es', verb.conjugations.erSieEs, 'erSieEs')}
+        {renderConjugation('wir', verb.conjugations.wir, 'wir')}
+        {renderConjugation('ihr', verb.conjugations.ihr, 'ihr')}
+        {renderConjugation('sie', verb.conjugations.sie, 'sie')}
+      </div>
+    </div>
+  );
+};
+
+const ArticleRuleCard = ({ rule }) => {
+  return (
+    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow">
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">{rule.category}</h3>
+      <div className="space-y-2">
+        {rule.examples.map((example, index) => (
+          <div key={index} className="text-sm text-gray-700 dark:text-gray-300">
+            <span className="font-medium">{example}</span>
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+const SectionCard = ({ id, title, items, type }) => {
+  return (
+    <div id={id} className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">{title}</h2>
+      {type === 'verbs' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item, index) => (
+            <VerbCard key={index} verb={item} />
+          ))}
+        </div>
+      ) : type === 'articleRules' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item, index) => (
+            <ArticleRuleCard key={index} rule={item} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-xl font-bold text-gray-800 dark:text-white">{item.german}</p>
+                    <button
+                      onClick={() => speakGerman(item.german)}
+                      className="p-1 hover:bg-primary-100 dark:hover:bg-primary-900/20 rounded transition-colors"
+                      title="Pronounce"
+                    >
+                      <Volume2 className="w-4 h-4 text-primary-500" />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{item.english}</p>
+                    {item.format && (
+                      <span className="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-2 py-0.5 rounded">
+                        {item.format}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 italic">{item.example}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -336,7 +788,7 @@ export default function Essentials() {
             <span>Essentials</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Learn alphabet, colors, numbers, seasons, months, weekdays, time, and common phrases
+            Learn alphabet, colors, numbers, seasons, months, weekdays, time, common phrases, body parts, article rules, pronouns, and verb conjugations
           </p>
         </div>
 
@@ -364,7 +816,7 @@ export default function Essentials() {
         {/* Sections */}
         <div className="space-y-8">
           {sections.map((section) => (
-            <SectionCard key={section.id} id={section.id} title={section.title} items={section.items} />
+            <SectionCard key={section.id} id={section.id} title={section.title} items={section.items} type={section.type} />
           ))}
         </div>
       </div>
